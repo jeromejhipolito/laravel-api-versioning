@@ -1,4 +1,5 @@
 {
     "Unsupported API version. Supported versions: :versions": "サポートされていないAPIバージョンです。サポートされているバージョン: :versions",
-    "This API version is currently disabled. Features for this version are not yet available.": "このAPIバージョンは現在無効です。このバージョンの機能はまだ利用できません。"
+    "This API version is currently disabled. Features for this version are not yet available.": "このAPIバージョンは現在無効です。このバージョンの機能はまだ利用できません。",
+    "This endpoint requires API version :version or higher": "このエンドポイントにはAPIバージョン :version 以上が必要です"
 }

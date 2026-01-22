@@ -10,6 +10,7 @@ Header-based API versioning with version flags for Laravel. Supports semantic ve
 - 🏷️ **Header-based versioning** - Uses `X-API-Version` header (industry standard like Stripe, GitHub)
 - 📦 **Semantic versioning** - Full support for major.minor.patch format (1.0.0, 1.1.0, 2.0.0)
 - 🚩 **Version flags** - Enable/disable versions independently (perfect for app store review periods)
+- 🔒 **Minimum version middleware** - Require minimum version per route: `min.version:1.1.0`
 - 🔄 **Controller inheritance** - Override only changed methods in versioned controllers
 - 📱 **Mobile-friendly** - Disabled versions return `version_enabled: false` so apps can hide features
 - 🌍 **Translations** - Built-in support for English, Japanese, and Korean
@@ -197,6 +198,50 @@ This allows mobile apps to check `version_enabled` and hide features accordingly
    ```env
    API_ENABLED_VERSIONS=1.0.0,2.0.0
    ```
+
+## Minimum Version Middleware
+
+Require a minimum API version for specific routes or groups:
+
+### Register the Middleware Alias
+
+In `bootstrap/app.php`:
+
+```php
+use JeromeJHipolito\ApiVersioning\Middleware\MinimumVersionMiddleware;
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'min.version' => MinimumVersionMiddleware::class,
+    ]);
+})
+```
+
+### Usage
+
+```php
+// Single route
+Route::post('new-feature', [FeatureController::class, 'store'])
+    ->middleware('min.version:1.1.0');
+
+// Route group
+Route::group(['middleware' => ['min.version:2.0.0']], function () {
+    Route::post('advanced', [AdvancedController::class, 'store']);
+    Route::delete('advanced/{id}', [AdvancedController::class, 'destroy']);
+});
+```
+
+### Response When Version Is Too Low
+
+```json
+{
+    "message": "This endpoint requires API version 1.1.0 or higher",
+    "current_version": "1.0.0",
+    "minimum_version": "1.1.0"
+}
+```
+
+HTTP Status: `400 Bad Request`
 
 ## Available Methods
 

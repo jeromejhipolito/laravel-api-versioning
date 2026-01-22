@@ -6,6 +6,7 @@ namespace JeromeJHipolito\ApiVersioning;
 
 use Illuminate\Support\ServiceProvider;
 use JeromeJHipolito\ApiVersioning\Middleware\ApiVersionMiddleware;
+use JeromeJHipolito\ApiVersioning\Middleware\MinimumVersionMiddleware;
 use JeromeJHipolito\ApiVersioning\Middleware\ResolveVersionedController;
 
 class ApiVersioningServiceProvider extends ServiceProvider
@@ -36,6 +37,7 @@ class ApiVersioningServiceProvider extends ServiceProvider
     {
         return [
             ApiVersionMiddleware::class,
+            MinimumVersionMiddleware::class,
             ResolveVersionedController::class,
         ];
     }
